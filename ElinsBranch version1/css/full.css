@@ -11,6 +11,16 @@ body {
   background-size: cover;
   -o-background-size: cover;
 }
+.navbar-brand{
+  width: 150px;
+  margin-left: 10px;
+  border-radius: 25px;
+  background: #00b359;
+}
+
+a.navbar-brand{
+  text-align: center;
+}
 
 #backgroundImage{
   width: 1300px;
