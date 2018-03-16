@@ -16,7 +16,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="#">Spotify Roulette</a>
+        <a class="navbar-brand" href="">Spotify Roulette</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -51,33 +51,36 @@
 			</div>
 			
 			<div id="getStartedDiv">
-				<button id="getStarted">Get started!</button>
+				<input id="filterSearch" list="filter" placeholder="Enter a filter" autocomplete="off"></input>
+				<datalist id="filter">
+						
+				</datalist>				
+				<button id="getStarted" type="submit">Go!</button>
+				
 			</div>
-			
-			<div id="loggedin">
+		</div>
+	
+			<script id="oauth-template" type="text/x-handlebars-template">
+				<h2>oAuth info</h2>
+				<dl class="dl-horizontal">
+					<dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
+					<dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}</dd>
+				</dl>
+			</script>
+	
+    </div>
+	<footer>
+	<div id="loggedin">
 				<div id="user-profile">
 				</div>
 				<div id="oauth">
 				</div>
 				<button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
 			</div>
-		</div>
-	
-
-		<script id="oauth-template" type="text/x-handlebars-template">
-			<h2>oAuth info</h2>
-			<dl class="dl-horizontal">
-				<dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
-				<dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}</dd>
-			</dl>
-		</script>
-
-		<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-		<script src="scriptStart.js"></script>
-		
-    </div>
-	
+	</footer>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="scriptStart.js"></script>	
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

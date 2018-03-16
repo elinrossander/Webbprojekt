@@ -24,25 +24,36 @@ var access_token = params.access_token,
     refresh_token = params.refresh_token,
     error = params.error;
 	
+var content = document.getElementById("getStartedDiv");
+	content.style.display = "none";							//Gömmer sökfältet vid inloggning
 	
 if (error) {
     alert('There was an error during the authentication');
 } else {
     if (access_token) {
+		content.style.display = "block";
+		document.getElementById("mainContent").style.display = "block";		//Visar sökfältet igen
 		// render oauth info
 		oauthPlaceholder.innerHTML = oauthTemplate({
 			access_token: access_token,
 			refresh_token: refresh_token
 		});
 
+		
+		/**
+		*
+		*	Hämtar info om inloggade användaren.
+		*	Vi kan använda detta till nån liten "användarinfo"-flik, kanske? 
+		*
+		*/
 		$.ajax({
             url: 'https://api.spotify.com/v1/me',
             headers: {
                   'Authorization': 'Bearer ' + access_token
             },
             success: function(response) {
-
-                $('#login').hide();
+				
+                $('#login').hide();				
                 $('#loggedin').show();
             }
         });
@@ -69,22 +80,47 @@ if (error) {
 }	
 
 $(document).ready(function(){
-	document.getElementById("getStarted").addEventListener("click", function(){
+	
+	var filter = document.getElementById("filterSearch");
+	var dataList = document.getElementById("filter");
+	
+	/*
+	*	hämtar kategorier från spotify och lägger till dem som sökalternativ
+	*/
+	if (access_token) {
+			$.ajax({
+				url: 'https://api.spotify.com/v1/browse/categories',
+				headers: {
+					'Authorization': 'Bearer ' + access_token
+				},
+				success: function(response) {
+					var items = response.categories.items;
+					for(i=0;i<items.length;i++){
+						dataList.innerHTML += "\n<option value=\"" + items[i].id + "\">"
+					}
+				}
+			});
+		}	
+		
+		
+	/*
+	*Körs när man söker/trycker på "Go!"-knappen
+	*/
+	document.getElementById("getStarted").addEventListener("click", function aSong(){
 		var stuffContent = document.getElementById("mainContent");
-		document.getElementById("getStartedDiv").innerHTML = "";
+		
+		
 		if (access_token) {
 			$.ajax({
-				url: 'https://api.spotify.com/v1/browse/categories/party',
+				url: 'https://api.spotify.com/v1/browse/categories/' + filter.value,	// hämtar den valda kategorin
 				headers: {
 					'Authorization': 'Bearer ' + access_token
 				},
 				success: function(response) {
 				var image = response.icons;
 					stuffContent.innerHTML = "<p>" + response.name + "</p>"
-							+ "<img src=\"" + image[0].url + "\"/>"
-							+ "<button id=\"getSong\" > get a song! </button>";
-						
-					document.getElementById("getSong").addEventListener("click", function aSong(){
+							+ "<img src=\"" + image[0].url + "\"/>";
+					
 						$.ajax({
 							url: '/refresh_token',
 							data: {
@@ -98,7 +134,7 @@ $(document).ready(function(){
 							});
 						});
 						$.ajax({
-							url:'https://api.spotify.com/v1/browse/categories/party/playlists',
+							url:'https://api.spotify.com/v1/browse/categories/' + filter.value + '/playlists',		//hämtar kategorins alla playlists
 							headers: {
 								'Authorization': 'Bearer ' + access_token
 							},
@@ -106,22 +142,20 @@ $(document).ready(function(){
 								var lists = response.playlists.items;
 								var listNr; 
 										
-								while(lists[listNr] == null){
+								while(lists[listNr] == null){							//slumpar fram en playlist. while-loopen körs tills den hittar en lista som inte är 'null'
 									listNr = Math.floor(Math.random() * lists.length);
 								}
 									
-								console.log(listNr);
-									
 								$.ajax({
-									url:  lists[listNr].href ,
+									url:  lists[listNr].href ,							//hämtar vald playlist
 									headers: {
 										'Authorization': 'Bearer ' + access_token
 									},
 									success: function(response){
 										var tracks = response.tracks.items;
-										var trackNr = Math.floor(Math.random() * tracks.length);
+										var trackNr;	
 										
-										while(tracks[trackNr] == null 
+										while(tracks[trackNr] == null 							//slumpar fram en låt från vald playlist. while-loopen körs tills den hittar en låt vars värden inte är 'null'
 											|| tracks[trackNr].track.artists[0].name == null 
 											|| tracks[trackNr].track.name == null
 											|| tracks[trackNr].track.preview_url == null){
@@ -130,10 +164,18 @@ $(document).ready(function(){
 												
 										var track = tracks[trackNr];
 										
+										/*
+										*visar låtinfo, audio-spelare samt en knapp för att hitta ny låt
+										*/
 										stuffContent.innerHTML = "<h3> Song name: " + track.track.artists[0].name + " - " + track.track.name + "</h3>"
 										+ "<audio controls><source src=\"" + track.track.preview_url + "\" type=\" audio/mpeg\"></audio>"
-										+ "<button id=\"newSong\"> New song! </button>";
-												
+										+ "\n<div>"
+										+ "\n<button id=\"newSong\"> New song! </button>"
+										+ "</div>";
+										
+										/*
+										*Listener som startar om sök-funktionen på nytt ifall man trycker på "ny låt"
+										*/
 										document.getElementById("newSong").addEventListener("click", function(){
 											aSong();
 										});
@@ -141,8 +183,8 @@ $(document).ready(function(){
 									}
 								});
 							}
-						});						
-					});
+						});											
+					
 				}
 			});
 		}
