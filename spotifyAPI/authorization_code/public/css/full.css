@@ -1,0 +1,29 @@
+/*!
+ * Start Bootstrap - Full (https://startbootstrap.com/template-overviews/full)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-full/blob/master/LICENSE)
+ */
+
+body {
+  background: url('http://placehold.it/1920x1080') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  background-image: url("../background.jpeg");
+  color: #ccd;
+}
+.navbar-brand{
+  width: 150px;
+  margin-left: 10px;
+  border-radius: 25px;
+  background: #00b359;
+}
+
+a.navbar-brand{
+  text-align: center;
+}
+
+#mainContent{
+	margin-top: 50px;
+}
