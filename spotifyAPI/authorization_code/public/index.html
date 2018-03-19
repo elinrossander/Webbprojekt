@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Spotify Roulette</title>
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/full.css" rel="stylesheet">
+  </head>
+  
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="">Spotify Roulette</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+	
+	
+	
+    <div class="container" id="mainContent">	
+		<div class="container">
+			<div id="login">
+				<h1>This is an example of the Authorization Code flow</h1>
+				<a href="/login" class="btn btn-primary">Log in with Spotify</a>
+			</div>
+			
+			<div id="getStartedDiv">
+				<input id="filterSearch" list="filter" placeholder="Enter a filter" autocomplete="off"></input>
+				<datalist id="filter">
+						
+				</datalist>				
+				<button id="getStarted" type="submit">Go!</button>
+				
+			</div>
+            <div id="wheel">
+                <img src="wheel.png" id="wheelFrame">
+                <div id="pictures">
+                    <img src="1.jpg" id="0" style="width:100px;height:100px;">
+                    <img src="2.jpg" id="1" style="width:100px;height:100px;">
+                    <img src="3.jpg" id="2" style="width:100px;height:100px;">
+                    <img src="4.jpg" id="3" style="width:100px;height:100px;">
+                </div>
+            </div>
+		</div>
+	
+			<script id="oauth-template" type="text/x-handlebars-template">
+				<h2>oAuth info</h2>
+				<dl class="dl-horizontal">
+					<dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
+					<dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}</dd>
+				</dl>
+			</script>
+	
+    </div>
+	<footer>
+	<div id="loggedin">
+				<div id="user-profile">
+				</div>
+				<div id="oauth">
+				</div>
+				<button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
+			</div>
+	</footer>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="scriptStart.js"></script>	
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+</html>
