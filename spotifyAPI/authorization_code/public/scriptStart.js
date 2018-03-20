@@ -79,6 +79,7 @@ if (error) {
     }, false);
 }	
 
+
 $(document).ready(function(){
 	
 	var filter = document.getElementById("filterSearch");
@@ -106,10 +107,10 @@ $(document).ready(function(){
 	/*
 	*Körs när man söker/trycker på "Go!"-knappen
 	*/
-	document.getElementById("getStarted").addEventListener("click", function aSong(){
+	var autoplay = false;
+	document.getElementById("getStarted").addEventListener("click", function aSong(autoplay){
 		var stuffContent = document.getElementById("mainContent");
-		
-		
+		document.getElementById("loggedin").display = "none";
 		if (access_token) {
 			$.ajax({
 				url: 'https://api.spotify.com/v1/browse/categories/' + filter.value,	// hämtar den valda kategorin
@@ -168,16 +169,49 @@ $(document).ready(function(){
 										*visar låtinfo, audio-spelare samt en knapp för att hitta ny låt
 										*/
 										stuffContent.innerHTML = "<h3> Song name: " + track.track.artists[0].name + " - " + track.track.name + "</h3>"
-										+ "<audio controls><source src=\"" + track.track.preview_url + "\" type=\" audio/mpeg\"></audio>"
+										+ "\n<div id=\"audioPlayerDiv\">"
+										+ "\n    <audio id=\"audioPlayer\" controls><source src=\"" + track.track.preview_url + "\" type=\" audio/mpeg\">Your browser does not support the audio player!\n Go download Google Chrome and try agains!</audio>"
+										+ "\n</div>"
+										+ "\n<input id=\"checkBox\" type=\"checkbox\">Autoplay</input>"
 										+ "\n<div>"
-										+ "\n<button id=\"newSong\"> New song! </button>"
-										+ "</div>";
-										
+										+ "\n    <button id=\"newSong\"> New song! </button>"
+										+ "\n</div>";
+										console.log(autoplay);
 										/*
 										*Listener som startar om sök-funktionen på nytt ifall man trycker på "ny låt"
 										*/
+										
+										var albumImage = track.track.album.images[0];
+										document.getElementById("audioPlayerDiv").style.backgroundImage = 'url(' + albumImage.url + ')';
+										document.getElementById("audioPlayerDiv").style.backgroundSize = "300px 100%";
+										document.getElementById("audioPlayerDiv").style.height = "300px";
+										document.getElementById("audioPlayerDiv").style.width = "300px";
+										document.getElementById("audioPlayerDiv").style.margin = "auto";
+										document.getElementById("audioPlayerDiv").style.position = "relative";
+										document.getElementById("audioPlayer").style.position = "absolute";
+										document.getElementById("audioPlayer").style.bottom = "0px";
+										document.getElementById("audioPlayer").style.left = "0px";
+										if(autoplay == true){
+											document.getElementById("checkBox").checked = true;
+											document.getElementById("audioPlayer").autoplay = true;
+											document.getElementById("audioPlayer").addEventListener('ended', function(){
+													aSong(true);
+											});
+										}
+										
+										document.getElementById("checkBox").addEventListener('change', function(){
+											if(this.checked){
+												document.getElementById("audioPlayer").autoplay = true;
+												document.getElementById("audioPlayer").addEventListener('ended', function(){
+													aSong(true);
+												});
+											} else{
+												document.getElementById("audioPlayer").autoplay = false;
+											}
+										});
+										
 										document.getElementById("newSong").addEventListener("click", function(){
-											aSong();
+											aSong(false);
 										});
 												
 									}
